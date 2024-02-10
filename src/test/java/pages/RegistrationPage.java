@@ -1,40 +1,38 @@
 package pages;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import pages.components.CalendarComponent;
-import pages.components.RegistrationResultsModal;
+import pages.components.ModalWindowComponent;
 
+import static com.codeborne.selenide.Condition.cssClass;
+import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.executeJavaScript;
 
 public class RegistrationPage {
-    CalendarComponent calendarComponent = new CalendarComponent();
-    RegistrationResultsModal registrationResultsModal = new RegistrationResultsModal();
-
-    private final String tittleText = "Student Registration Form";
-    private SelenideElement firstNameInput = $("#firstName"),
+    private SelenideElement userForm = $("#userForm"),
+            firstNameInput = $("#firstName"),
             lastNameInput = $("#lastName"),
-            userEmailInput = $("#userEmail"),
-            genderRadioButtons = $("#genterWrapper"),
-            userNumberInput = $("#userNumber"),
-            userBDayInput = $("#dateOfBirthInput"),
-            subjectsInput = $("#subjectsInput"),
-            hobbiesCheckBoxes = $("#hobbiesWrapper"),
-            uploadPictureButton = $("#uploadPicture"),
-            adressField = $("#currentAddress"),
-            stateList = $("#state"),
-            cityList = $("#city"),
-            submitButton = $("#submit"),
-            closeButton = $("#closeLargeModal");
+            emailInput = $("#userEmail"),
+            genderInput = $("#genterWrapper"),
+            numberInput = $("#userNumber"),
+            calendarInput = $("#dateOfBirthInput"),
+            subjectInput = $("#subjectsInput"),
+            hobbiesInput = $("#hobbiesWrapper"),
+            pictureInput = $("#uploadPicture"),
+            addressInput = $("#currentAddress"),
+            stateInput = $("#state"),
+            cityInput = $("#city"),
+            submitButton = $("#submit");
 
+    CalendarComponent calendarComponent = new CalendarComponent();
+    ModalWindowComponent modalWindowComponent = new ModalWindowComponent();
 
     public RegistrationPage openPage() {
         open("/automation-practice-form");
-        $(".practice-form-wrapper").shouldHave(Condition.text(tittleText));
-        executeJavaScript("$('footer').remove()");
         executeJavaScript("$('#fixedban').remove()");
+        executeJavaScript("$('footer').remove()");
         return this;
     }
 
@@ -49,82 +47,79 @@ public class RegistrationPage {
     }
 
     public RegistrationPage setEmail(String value) {
-        userEmailInput.setValue(value);
+        emailInput.setValue(value);
         return this;
     }
 
     public RegistrationPage setGender(String value) {
-        genderRadioButtons.$(byText(value)).click();
+        genderInput.$(byText(value)).click();
         return this;
     }
 
-    public RegistrationPage setUserNumber(String value) {
-        userNumberInput.setValue(value);
+    public RegistrationPage setNumber(String value) {
+        numberInput.setValue(value);
         return this;
     }
 
-    public RegistrationPage setBDate(String day, String month, String year) {
-        userBDayInput.click();
+    public RegistrationPage setDateOfBirth(String day, String month, String year) {
+        calendarInput.click();
         calendarComponent.setDate(day, month, year);
         return this;
     }
 
     public RegistrationPage setSubject(String value) {
-        subjectsInput.setValue(value).pressEnter();
+        subjectInput.setValue(value).pressEnter();
         return this;
     }
 
     public RegistrationPage setHobbies(String value) {
-        hobbiesCheckBoxes.$(byText(value)).click();
+        hobbiesInput.$(byText(value)).click();
         return this;
     }
 
-    public RegistrationPage uploadPicture(String value) {
-        uploadPictureButton.uploadFromClasspath(value);
+    public RegistrationPage setPicture(String filename) {
+        pictureInput.uploadFromClasspath("img/"+filename);
         return this;
     }
 
-    public RegistrationPage setAdress(String value) {
-        adressField.setValue(value);
+    public RegistrationPage setAddress(String value) {
+        addressInput.setValue(value);
         return this;
     }
 
     public RegistrationPage setState(String value) {
-        stateList.click();
-        stateList.$(byText(value)).click();
+        stateInput.click();
+        stateInput.$(byText(value)).click();
         return this;
     }
 
     public RegistrationPage setCity(String value) {
-        cityList.click();
-        cityList.$(byText(value)).click();
+        cityInput.click();
+        cityInput.$(byText(value)).click();
         return this;
     }
 
-    public RegistrationPage clickSubmit() {
+    public RegistrationPage submit() {
         submitButton.click();
         return this;
     }
 
-    public RegistrationPage verifyResultsModalAppears() {
-        registrationResultsModal.verifyModalAppears();
+    public RegistrationPage checkSubmitResult(String fieldName, String value) {
+        modalWindowComponent.checkSubmitForm(fieldName, value);
         return this;
     }
 
-    public RegistrationPage verifyResultsModalNotAppears() {
-        registrationResultsModal.verifyModalNotAppears();
+    public RegistrationPage checkValidation() {
+        String valueName = "border-color";
+        String colorRed = "rgb(220, 53, 69)";
+        userForm.shouldHave(cssClass("was-validated"));
+        firstNameInput.shouldHave(cssValue(valueName,colorRed));
+        lastNameInput.shouldHave(cssValue(valueName,colorRed));
+        genderInput.$("label[for='gender-radio-1']").shouldHave(cssValue(valueName,colorRed)); //Male
+        genderInput.$("label[for='gender-radio-2']").shouldHave(cssValue(valueName,colorRed)); //Female
+        genderInput.$("label[for='gender-radio-3']").shouldHave(cssValue(valueName,colorRed)); //Other
+        numberInput.shouldHave(cssValue(valueName,colorRed));
         return this;
     }
-
-    public RegistrationPage verifyResult(String key, String value) {
-        registrationResultsModal.verifyResults(key, value);
-        return this;
-    }
-
-    public RegistrationPage clickClose() {
-        closeButton.click();
-        return this;
-    }
-
 
 }
