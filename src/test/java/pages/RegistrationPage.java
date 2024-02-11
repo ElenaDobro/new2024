@@ -78,7 +78,7 @@ public class RegistrationPage {
     }
 
     public RegistrationPage setPicture(String filename) {
-        pictureInput.uploadFromClasspath("img/"+filename);
+        pictureInput.uploadFromClasspath(filename);
         return this;
     }
 
@@ -121,5 +121,4 @@ public class RegistrationPage {
         numberInput.shouldHave(cssValue(valueName,colorRed));
         return this;
     }
-
 }
