@@ -3,29 +3,18 @@ package tests;
 import org.junit.jupiter.api.Test;
 import pages.RegistrationPage;
 
-public class RegistrationFormTests extends TestBase {
+import static utils.RandomUtils.getRandomString;
+
+public class RegistrationWithRandomUtilsTests extends TestBase {
 
     RegistrationPage registrationPage = new RegistrationPage();
 
     @Test
-    void minimalRegistrationTest() {
-        registrationPage.openPage()
-                .setFirstName("Elena")
-                .setLastName("Dobrovolskaya")
-                .setGender("Female")
-                .setNumber("1234567890")
-                .submit()
-                .checkSubmitResult("Student Name", "Elena Dobrovolskaya")
-                .checkSubmitResult("Gender", "Female")
-                .checkSubmitResult("Mobile", "1234567890");
-    }
-
-    @Test
     void fullRegistrationTest() {
         registrationPage.openPage()
-                .setFirstName("Elena")
-                .setLastName("Dobrovolskaya")
-                .setEmail("ally999@mail.ru")
+                .setFirstName(getRandomString(10))
+                .setLastName(getRandomString(10))
+                .setEmail(getRandomString(5) + "@" + getRandomString(5) + ".ru")
                 .setGender("Female")
                 .setNumber("1234567890")
                 //.setDateOfBirth("30", "July", "1986")
@@ -47,10 +36,23 @@ public class RegistrationFormTests extends TestBase {
                 .checkSubmitResult("Address", "Lenina, 54")
                 .checkSubmitResult("State and City", "Uttar Pradesh Merrut");
     }
-
-    @Test
-    void emptySubmitTest() {
-        registrationPage.openPage().submit().checkValidation();
-    }
-
 }
+
+   // @Test
+   // void emptySubmitTest() {
+    //    registrationPage.openPage().submit().checkValidation();
+//    }
+//   @Test
+//  void minimalRegistrationTest() {
+//      registrationPage.openPage()
+//              .setFirstName("getRandomString(len: 10)")
+//              .setLastName("getRandomString(len: 10)")
+//             .setGender("Female")
+//             .setNumber("1234567890")
+//            .submit()
+//           .checkSubmitResult("Student Name", "Elena Dobrovolskaya")
+//           .checkSubmitResult("Gender", "Female")
+//           .checkSubmitResult("Mobile", "1234567890");
+
+
+

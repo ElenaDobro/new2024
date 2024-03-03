@@ -61,9 +61,9 @@ public class RegistrationPage {
         return this;
     }
 
-    public RegistrationPage setDateOfBirth(String day, String month, String year) {
+    public RegistrationPage setDateOfBirth(String month, String year) {
         calendarInput.click();
-        calendarComponent.setDate(day, month, year);
+        calendarComponent.setDate(month, year);
         return this;
     }
 
@@ -87,22 +87,32 @@ public class RegistrationPage {
         return this;
     }
 
-    public RegistrationPage setState(String value) {
-        stateInput.click();
-        stateInput.$(byText(value)).click();
+//    public RegistrationPage setState(String value) {
+//        stateInput.click();
+//        stateInput.$(byText(value)).click();
+//        return this;
+//   }
+
+ //   public RegistrationPage setCity(String value) {
+ //       cityInput.click();
+ //       cityInput.$(byText(value)).click();
+ //       return this;
+//    }
+
+  public RegistrationPage submit() {
+      submitButton.click();
+       return this;
+   }
+
+    public RegistrationPage setStateAndCity(String state, String city) {
+        $("#state").click();
+        $("#stateCity-wrapper").$(byText(state)).click();
+        $("#city").click();
+        $("#stateCity-wrapper").$(byText(city)).click();
+
         return this;
     }
 
-    public RegistrationPage setCity(String value) {
-        cityInput.click();
-        cityInput.$(byText(value)).click();
-        return this;
-    }
-
-    public RegistrationPage submit() {
-        submitButton.click();
-        return this;
-    }
 
     public RegistrationPage checkSubmitResult(String fieldName, String value) {
         modalWindowComponent.checkSubmitForm(fieldName, value);
